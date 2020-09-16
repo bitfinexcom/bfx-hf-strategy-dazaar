@@ -1,0 +1,56 @@
+{
+  "name": "bfx-hf-strategy-dazaar",
+  "version": "1.0.0",
+  "description": "Dazaar logic for bfx-hf-strategy",
+  "main": "./index.js",
+  "author": "Bitfinex",
+  "contributors": [
+    "Cris Mihalache <cris.m@bitfinex.com> (https://www.bitfinex.com)",
+    "Paolo Ardoino <paolo@bitfinex.com> (https://www.bitfinex.com)",
+    "Jacob Plaster <jacob.plaster@bitfinex.com> (https://www.bitfinex.com)",
+    "Robert Kowalski <robert@bitfinex.com> (https://www.bitfinex.com)"
+  ],
+  "license": "Apache-2.0",
+  "scripts": {
+    "lint": "standard",
+    "test": "npm run lint && npm run unit",
+    "unit": "NODE_ENV=test mocha -R spec -b --recursive",
+    "api_docs": "node_modules/jsdoc-to-markdown/bin/cli.js ./index.js > docs/api.md",
+    "docs": "npm run api_docs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bitfinexcom/bfx-hf-strategy-dazaar.git"
+  },
+  "keywords": [
+    "honey framework",
+    "bitfinex",
+    "bitcoin",
+    "BTC",
+    "dazaar"
+  ],
+  "dependencies": {
+    "bfx-api-node-models": "^1.2.11",
+    "bfx-api-node-util": "^1.0.9",
+    "bfx-hf-strategy": "^1.0.5",
+    "debug": "^4.1.1"
+  },
+  "devDependencies": {
+    "@dazaar/payment": "^1.0.2",
+    "@hyperswarm/replicator": "^1.8.0",
+    "async": "^3.2.0",
+    "bfx-hf-util": "^1.0.9",
+    "bitfinex-api-node": "^4.0.15",
+    "bitfinex-terminal-key-encoding": "^1.0.0",
+    "dazaar": "^1.0.1",
+    "eslint": "^4.19.1",
+    "eslint-config-standard": "^7.0.0",
+    "eslint-plugin-promise": "^3.5.0",
+    "eslint-plugin-standard": "^2.0.1",
+    "hyperbee": "0.0.16",
+    "hypercore": "^9.5.0",
+    "jsdoc-to-markdown": "^5.0.1",
+    "mocha": "^6.2.0",
+    "standard": "^14.2.0"
+  }
+}
