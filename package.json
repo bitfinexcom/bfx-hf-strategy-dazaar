@@ -1,6 +1,6 @@
 {
   "name": "bfx-hf-strategy-dazaar",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Dazaar logic for bfx-hf-strategy",
   "main": "./index.js",
   "author": "Bitfinex",
