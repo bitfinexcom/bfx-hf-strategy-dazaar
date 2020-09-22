@@ -125,7 +125,7 @@ async.auto({
 
     const { exec, stream } = await execDazaar(strategy, market, db, {
       submitOrder,
-
+      simulateFill: true,
       includeTrades: false,
       seedCandleCount: 10
     })

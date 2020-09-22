@@ -29,13 +29,14 @@ const execStream = async (strategy = {}, market, db, args = {}) => {
   const isTrade = args.isTrade || _isTrade
   const {
     submitOrder,
-    seedCandleCount
+    seedCandleCount,
+    backtesting,
+    simulateFill
   } = args
 
   let state = {
-    backtesting: false,
-    liveStream: true,
-
+    backtesting: backtesting || false,
+    simulateFill,
     submitOrder,
     trades: [],
     ...strategy
