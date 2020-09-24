@@ -1,3 +1,9 @@
+# 1.1.1
+ - use terms of service in examples
+ - filter consolidated candles with latest key-encoding module
+ - add dazaar card
+ - use terminal service in examples
+
 # 1.1.0
  - add initialFill property
 
