@@ -1,12 +1,14 @@
 'use strict'
 
 const debug = require('debug')('bfx:hf:strategy-dazaar')
+const { Transform } = require('stream')
 
 const {
   onSeedCandle, onCandle, onTrade
 } = require('bfx-hf-strategy')
 
 const { Candle, Trade } = require('bfx-api-node-models')
+const { candleWidth } = require('bfx-hf-util')
 
 const _isTrade = (k, v) => {
   if (!Array.isArray(v)) {
@@ -42,37 +44,48 @@ const execStream = async (strategy = {}, market, db, args = {}) => {
     ...strategy
   }
 
+  if (!market.tf) throw new Error('ERR_MISSING_TF')
+
   const exec = getExec(market, state, isTrade, args)
 
   if (typeof seedCandleCount === 'number' && seedCandleCount !== 0) {
-    state = await seedState(state, db, exec, args)
+    state = await seedState(state, db, exec, market, args)
   }
 
-  const { stream } = getStream(db, args)
+  const { stream } = getStream(db, market, args)
 
   return { exec, state, stream }
 }
 
-function getStream (db, args) {
+function getStream (db, market, args) {
+  const { tf } = market
   const since = db.feed.length
 
-  const stream = db.createHistoryStream({
+  const hs = db.createHistoryStream({
     gt: since,
     live: true
   })
 
+  const ts = new FilterCandles({ key: tf })
+  const stream = hs.pipe(ts)
+
   return { stream }
 }
 
-async function seedState (strategyState, db, exec, args, cb) {
+async function seedState (strategyState, db, exec, market, args) {
   const { seedCandleCount } = args
-  const since = db.feed.length - Math.abs(seedCandleCount)
+  const { tf } = market
+
+  const cWidth = candleWidth(tf)
+  const now = Date.now()
+  const since = new Date(now - (Math.abs(seedCandleCount) * cWidth))
 
   debug('seeding with last ~%d candles...', seedCandleCount)
-  debug('starting from seq %d', since)
+  debug('seeding starting from', since)
 
-  const hs = db.createHistoryStream({
-    gt: since,
+  const hs = db.createReadStream({
+    gt: { candle: tf, timestamp: since },
+    lt: { candle: tf, timestamp: now },
     limit: seedCandleCount
   })
 
@@ -109,6 +122,30 @@ function getExec (market, strategyState, isTrade, args) {
     }
 
     return strategyState
+  }
+}
+
+class FilterCandles extends Transform {
+  constructor (options) {
+    super({
+      decodeStrings: false,
+      objectMode: true
+    })
+
+    if (!options || !options.key) {
+      throw new Error('ERR_MISS_KEY')
+    }
+
+    this.key = options.key
+  }
+
+  _transform (data, enc, cb) {
+    if (this.key !== data.key.candle) {
+      return cb()
+    }
+
+    this.push(data)
+    cb()
   }
 }
 
