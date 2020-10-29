@@ -1,7 +1,6 @@
 'use strict'
 
 const debug = require('debug')('bfx:hf:strategy-dazaar')
-const { Transform } = require('stream')
 
 const {
   onSeedCandle, onCandle, onTrade
@@ -10,12 +9,10 @@ const {
 const { Candle, Trade } = require('bfx-api-node-models')
 const { candleWidth } = require('bfx-hf-util')
 
-const _isTrade = (k, v) => {
-  if (!Array.isArray(v)) {
-    throw new Error('ERR_WRONG_INPUT')
-  }
+const FilterCandles = require('./lib/filter_stream.js')
 
-  return v.length === 4 || v.length === 5
+const _isTrade = (k, v) => {
+  return k.candle === null
 }
 
 /**
@@ -122,30 +119,6 @@ function getExec (market, strategyState, isTrade, args) {
     }
 
     return strategyState
-  }
-}
-
-class FilterCandles extends Transform {
-  constructor (options) {
-    super({
-      decodeStrings: false,
-      objectMode: true
-    })
-
-    if (!options || !options.key) {
-      throw new Error('ERR_MISS_KEY')
-    }
-
-    this.key = options.key
-  }
-
-  _transform (data, enc, cb) {
-    if (this.key !== data.key.candle) {
-      return cb()
-    }
-
-    this.push(data)
-    cb()
   }
 }
 
