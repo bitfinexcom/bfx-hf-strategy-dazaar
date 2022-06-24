@@ -32,7 +32,7 @@
   "dependencies": {
     "bfx-api-node-models": "^1.2.11",
     "bfx-api-node-util": "^1.0.9",
-    "bfx-hf-strategy": "git+https://github.com/bitfinexcom/bfx-hf-strategy#v1.1.1",
+    "bfx-hf-strategy": "git+https://github.com/bitfinexcom/bfx-hf-strategy.git#v1.1.1",
     "debug": "^4.1.1"
   },
   "devDependencies": {
