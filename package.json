@@ -1,6 +1,6 @@
 {
   "name": "bfx-hf-strategy-dazaar",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "description": "Dazaar logic for bfx-hf-strategy",
   "main": "./index.js",
   "author": "Bitfinex",
@@ -32,7 +32,7 @@
   "dependencies": {
     "bfx-api-node-models": "^1.2.11",
     "bfx-api-node-util": "^1.0.9",
-    "bfx-hf-strategy": "^1.1.0",
+    "bfx-hf-strategy": "git+https://github.com/bitfinexcom/bfx-hf-strategy.git#v1.1.1",
     "debug": "^4.1.1"
   },
   "devDependencies": {
